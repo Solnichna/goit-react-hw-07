@@ -1,4 +1,4 @@
-import { Contact } from "../contact/Contact.jsx";
+import Contact from "../contact/Contact.jsx";
 import { selectContacts } from "../../redux/contactsSlice.js";
 
 

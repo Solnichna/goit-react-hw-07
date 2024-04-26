@@ -23,7 +23,7 @@ const pendingReducer = (state) => {
   state.contacts.items = [];
 };
 
-export const contactSlice = createSlice({
+export const contactsSlice = createSlice({
   name: "contacts",
   initialState,
   reducers: {
@@ -53,6 +53,7 @@ export const contactSlice = createSlice({
 
 export const selectContacts = (state) => state.contacts.items;
 
-export const { addContact } = contactSlice.actions;
+export const { addContact } = contactsSlice.actions;
 
-export const contactReducer = contactSlice.reducer;
+export const contactReducer = contactsSlice.reducer;
+export default contactsSlice;
