@@ -1,74 +1,60 @@
-import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchContacts, deleteContact } from "./contactsOps" ;
 
-const contactsSlice = createSlice({
-  name: 'contacts',
-  initialState: {
+const initialState = {
+  contacts: {
     items: [],
     loading: false,
-    error: null
+    error: null,
   },
+  filters: {
+    name: "",
+  },
+};
+
+const isPending = (action) =>
+  typeof action.type === "string" && action.type.endsWith("/pendding");
+const isRejected = (action) =>
+  typeof action.type === "string" && action.type.endsWith("/rejected");
+
+const pendingReducer = (state) => {
+  state.contacts.loading = true;
+  state.contacts.errer = null;
+  state.contacts.items = [];
+};
+
+export const contactSlice = createSlice({
+  name: "contacts",
+  initialState,
   reducers: {
-    setContacts(state, action) {
-      state.items = action.payload;
-    },
-    addContactSuccess(state, action) {
-      state.items.push(action.payload);
-    },
-    deleteContactSuccess(state, action) {
-      state.items = state.items.filter(contact => contact.id !== action.payload);
-    },
-    setLoading(state, action) {
-      state.loading = action.payload;
-    },
-    setError(state, action) {
-      state.error = action.payload;
-    }
-  }
+  },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.contacts.loading = false;
+        state.errer = null;
+        state.contacts.items = action.payload;
+      })
+
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.contacts.loading = false;
+        state.errer = null;
+        state.contacts.items = action.payload;
+      })
+
+      .addMatcher(isPending, pendingReducer)
+      .addMatcher(isRejected, (state, action) => {
+        state.contacts.loading = false;
+        state.contacts.error = action.payload;
+      });
+  },
 });
 
-export const { setContacts, addContactSuccess, deleteContactSuccess, setLoading, setError } = contactsSlice.actions;
+export const selectContacts = (state) => state.contacts.items;
 
+export const {
+  addContact,
+} = contactSlice.actions;
 
-export const fetchContacts = () => async dispatch => {
-  dispatch(setLoading(true));
-  try {
-    const response = await axios.get('https://6629139e54afcabd073815b7.mockapi.io/contacts'); 
-    dispatch(setContacts(response.data));
-    dispatch(setLoading(false));
-  } catch (error) {
-    dispatch(setError(error.message));
-    dispatch(setLoading(false));
-  }
-};
-
-export const addContact = (newContact) => async dispatch => {
-  dispatch(setLoading(true));
-  try {
-    const response = await axios.post('https://6629139e54afcabd073815b7.mockapi.io/contacts', newContact); // Adjust the URL according to your API endpoint
-    dispatch(addContactSuccess(response.data));
-    dispatch(setLoading(false));
-  } catch (error) {
-    dispatch(setError(error.message));
-    dispatch(setLoading(false));
-  }
-};
-
-
-export const deleteContact = (contactId) => async dispatch => {
-  dispatch(setLoading(true));
-  try {
-    await axios.delete(`https://6629139e54afcabd073815b7.mockapi.io/contacts/${contactId}`); 
-    dispatch(deleteContactSuccess(contactId));
-    dispatch(setLoading(false));
-  } catch (error) {
-    dispatch(setError(error.message));
-    dispatch(setLoading(false));
-  }
-};
-
-export const selectContacts = state => state.contacts.items;
-export const selectLoading = state => state.contacts.loading;
-export const selectError = state => state.contacts.error;
-
-export default contactsSlice.reducer;
+export const contactReducer = contactSlice.reducer;

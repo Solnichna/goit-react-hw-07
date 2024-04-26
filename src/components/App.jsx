@@ -1,24 +1,17 @@
 import React, { useEffect } from 'react';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux'; 
 import { store, persistor } from '../redux/store.js';
 import { PersistGate } from 'redux-persist/integration/react';
 import ContactForm from './contactForm/ContactForm';
 import ContactList from './contactList/ContactList';
 import SearchBox from './searchBox/SearchBox';
-import axios from 'axios'; 
+import { fetchContacts } from '../redux/contactsSlice'; 
 
 const App = () => {
+  const dispatch = useDispatch(); 
   useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        const response = await axios.get('/api/contacts'); 
-      } catch (error) {
-        console.error('Error fetching contacts:', error);
-      }
-    };
-
-    fetchContacts(); 
-  }, []); 
+    dispatch(fetchContacts());
+  }, [dispatch]); 
 
   return (
     <Provider store={store}>
