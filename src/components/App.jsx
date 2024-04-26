@@ -1,35 +1,32 @@
 import { useEffect } from "react";
-import { useSelector , useDispatch } from 'react-redux'; 
+import { useSelector, useDispatch } from 'react-redux'; 
 import ContactForm from './contactForm/ContactForm';
 import { ContactList } from './contactList/ContactList';
 import SearchBox from './searchBox/SearchBox';
 import { Loading } from "./loading/Loading.jsx";
 import { Error } from "./error/Error.jsx";
-import { fetchContacts, } from '../redux/contactsOps.js'; 
+import { fetchContacts } from '../redux/contactsOps.js'; 
 
 function App() {
   const dispatch = useDispatch();
 
-  const { loading, error, items } = useSelector(
-    (state) => state.contacts.contacts
-  );
+  const loading = useSelector(state => state.contacts.loading);
+  const error = useSelector(state => state.contacts.error);
+  const items = useSelector(state => state.contacts.items);
 
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-
   return (
-    <>
-      <div>
-        <h1>Phonebook</h1>
-        <ContactForm />
-        <SearchBox />
-        {loading && <Loading />}
-        {error && <Error />}
-        {items && <ContactList items={items} />}
-      </div>
-    </>
+    <div>
+      <h1>Phonebook</h1>
+      <ContactForm />
+      <SearchBox />
+      {loading && <Loading />}
+      {error && <Error />}
+      {items && <ContactList items={items} />}
+    </div>
   );
 }
 
