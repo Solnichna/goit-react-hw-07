@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'; 
 import ContactForm from './contactForm/ContactForm';
-import { ContactList } from './contactList/ContactList';
+import ContactList from './contactList/ContactList'; 
 import SearchBox from './searchBox/SearchBox';
 import { Loading } from "./loading/Loading.jsx";
 import { Error } from "./error/Error.jsx";
@@ -12,7 +12,6 @@ function App() {
 
   const loading = useSelector(state => state.contacts.loading);
   const error = useSelector(state => state.contacts.error);
-  const items = useSelector(state => state.contacts.items);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -25,7 +24,7 @@ function App() {
       <SearchBox />
       {loading && <Loading />}
       {error && <Error />}
-      {items && <ContactList items={items} />}
+      <ContactList /> {}
     </div>
   );
 }
