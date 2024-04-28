@@ -43,12 +43,12 @@ const ContactForm = () => {
         <Form className="contact-form">
           <div>
             <p>Name</p>
-            <Field type="text" name="name" placeholder="Name" />
+            <Field className="form" type="text" name="name" placeholder="Name" />
             <ErrorMessage name="name" component="div" />
           </div>
           <div>
             <p>Number</p>
-            <Field type="text" name="number" placeholder="Number" />
+            <Field className="form" type="text" name="number" placeholder="Number" />
             <ErrorMessage name="number" component="div" className="error-form"/>
           </div>
           <button type="submit" className="button-add-contact" disabled={isSubmitting}>

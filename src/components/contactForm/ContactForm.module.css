@@ -8,10 +8,16 @@
   flex-direction: column;
   gap: 10px;
 }
-
+.form {
+  background-color:rgb(40, 233, 240);
+  color: aliceblue;
+}
 .button-add-contact {
   width: 100px;
   padding: 5px;
+  background-color:rgb(18, 18, 177);
+  border-radius: 7px;
+  color: aliceblue;
 }
 
 .error-form {
