@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
-import { fetchContacts, deleteContact } from "./contactsOps.js";
+import { fetchContacts, deleteContact, addContact as addContactAsync } from "./contactsOps.js";
 
 const initialState = {
   items: [],
@@ -56,7 +56,14 @@ export const selectFilteredContacts = createSelector(
   }
 );
 
-export const { addContact } = contactsSlice.actions;
+export const addContact = (contact) => async (dispatch) => {
+  try {
+    const newContact = await addContactAsync(contact);
+    dispatch(contactsSlice.actions.addContact(newContact));
+  } catch (error) {
+    // error
+  }
+};
 
 export const contactsReducer = contactsSlice.reducer;
 
