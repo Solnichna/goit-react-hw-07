@@ -24,7 +24,15 @@ const pendingReducer = (state) => {
 export const contactsSlice = createSlice({
   name: "contacts",
   initialState,
-  reducers: {},
+  reducers: {
+    addContact: (state, action) => {
+      state.items.push(action.payload);
+    },
+    setFilters: (state, action) => {
+      state.filters = action.payload;
+    },
+    // Додайте інші reducers, якщо потрібно
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchContacts.fulfilled, (state, action) => {
@@ -35,7 +43,16 @@ export const contactsSlice = createSlice({
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.items = action.payload;
+        state.items = state.items.filter(contact => contact.id !== action.payload.id);
+      })
+      .addCase(addContactAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.items.push(action.payload);
+      })
+      .addCase(addContactAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       })
       .addMatcher(isPending, pendingReducer)
       .addMatcher(isRejected, (state, action) => {
@@ -56,14 +73,7 @@ export const selectFilteredContacts = createSelector(
   }
 );
 
-export const addContact = (contact) => async (dispatch) => {
-  try {
-    const newContact = await addContactAsync(contact);
-    dispatch(contactsSlice.actions.addContact(newContact));
-  } catch (error) {
-    // error
-  }
-};
+export const { addContact, setFilters } = contactsSlice.actions;
 
 export const contactsReducer = contactsSlice.reducer;
 
