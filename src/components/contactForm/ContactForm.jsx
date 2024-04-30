@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
 
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice'; 
+import { addContact } from '../../redux/contactsOps'; 
 
 const ContactForm = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const ContactForm = () => {
       name: values.name,
       number: values.number
     };
-    dispatch(addContact(newContact)); // Füge den Kontakt zum Redux-Store hinzu
+    dispatch(addContact(newContact)); 
     resetForm();
   };
 

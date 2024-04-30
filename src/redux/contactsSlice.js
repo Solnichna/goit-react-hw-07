@@ -25,13 +25,10 @@ export const contactsSlice = createSlice({
   name: "contacts",
   initialState,
   reducers: {
-    addContact: (state, action) => {
-      state.items.push(action.payload);
-    },
     setFilters: (state, action) => {
       state.filters = action.payload;
     },
-    // Додайте інші reducers, якщо потрібно
+
   },
   extraReducers: (builder) => {
     builder
