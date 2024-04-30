@@ -39,7 +39,7 @@ export const contactsSlice = createSlice({
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.items = state.items.filter(contact => contact.id !== action.payload.id);
+        state.items = state.items.filter(contact => contact.id !== action.payload);
       })
       .addCase(addContactAsync.fulfilled, (state, action) => {
         state.loading = false;
