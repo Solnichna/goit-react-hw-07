@@ -18,7 +18,6 @@ const isRejected = (action) =>
 const pendingReducer = (state) => {
   state.loading = true;
   state.error = null;
-  state.items = [];
 };
 
 export const contactsSlice = createSlice({
